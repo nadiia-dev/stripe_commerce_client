@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ProductsContext } from "../../context/products-context/ProductsContext";
 import Layout from "../shared/Layout";
 import "./singleProduct.styles.scss";
+import { CartContext } from "../../context/cart-context/CartContext";
+import { isInCart } from "../../helpers";
 
 const SingleProduct = () => {
   const params = useParams();
@@ -10,12 +12,12 @@ const SingleProduct = () => {
   const navigate = useNavigate();
   const { products } = use(ProductsContext);
   const [product, setProduct] = useState(null);
+  const { addItem, cartItems, increase } = use(CartContext);
 
   useEffect(() => {
     const singleProduct = products.find(
       (product) => Number(product.id) === Number(id)
     );
-    console.log(singleProduct);
 
     if (!singleProduct) {
       navigate("/shop");
@@ -41,12 +43,23 @@ const SingleProduct = () => {
             <p>{price}</p>
           </div>
           <div className="add-to-cart-btns">
-            <button
-              className="button is-white nomad-btn"
-              id="btn-white-outline"
-            >
-              ADD TO CART
-            </button>
+            {!isInCart(id, cartItems) ? (
+              <button
+                className="button is-white nomad-btn"
+                id="btn-white-outline"
+                onClick={() => addItem(product)}
+              >
+                ADD TO CART
+              </button>
+            ) : (
+              <button
+                className="button is-white nomad-btn"
+                id="btn-white-outline"
+                onClick={() => increase(product)}
+              >
+                ADD MORE
+              </button>
+            )}
 
             <button
               className="button is-black nomad-btn"

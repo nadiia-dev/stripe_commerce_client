@@ -2,6 +2,7 @@ import { use } from "react";
 import Layout from "../../components/shared/Layout";
 import { ProductsContext } from "../../context/products-context/ProductsContext";
 import FeaturedProduct from "../../components/featured-product/FeaturedProduct";
+import "./shop.styles.scss";
 
 const Shop = () => {
   const { products } = use(ProductsContext);

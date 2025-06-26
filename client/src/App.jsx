@@ -6,6 +6,8 @@ import Shop from "./pages/shop/Shop";
 import SingleProduct from "./components/single-product/SingleProduct";
 import Cart from "./pages/cart/Cart";
 import Checkout from "./components/checkout/Checkout";
+import Success from "./components/checkout/stripe-checkout/Success";
+import Canceled from "./components/checkout/stripe-checkout/Canceled";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/product/:id" element={<SingleProduct />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/success" element={<Success />} />
+        <Route path="canceled" element={<Canceled />} />
       </Routes>
     </div>
   );

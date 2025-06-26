@@ -8,6 +8,7 @@ import Cart from "./pages/cart/Cart";
 import Checkout from "./components/checkout/Checkout";
 import Success from "./components/checkout/stripe-checkout/Success";
 import Canceled from "./components/checkout/stripe-checkout/Canceled";
+import SignUp from "./components/sign-up/SignUp";
 
 function App() {
   return (
@@ -20,7 +21,9 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/success" element={<Success />} />
-        <Route path="canceled" element={<Canceled />} />
+        <Route path="/canceled" element={<Canceled />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/signin" element={<SignIn />} />
       </Routes>
     </div>
   );

@@ -4,7 +4,7 @@ export const isInCart = (id, cartItems) => {
   return cartItems.find((item) => Number(item.id) === Number(id));
 };
 
-const API = "http://localhost:8080";
+const API = import.meta.env.VITE_SERVER_URL;
 
 export async function fetchFromAPI(endpoint, opts) {
   const { method, body } = { method: "POST", body: null, ...opts };

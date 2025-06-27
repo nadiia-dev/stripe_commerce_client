@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Layout from "../shared/Layout";
 import { Formik } from "formik";
-import "../sign-up/sign-up.styles.scss";
+import "../sign-up/signUp.styles.scss";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { firebaseAuth } from "../../firebase";
 
 const validate = (values) => {
   const errors = {};
@@ -26,7 +27,7 @@ const SignIn = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     const { email, password } = values;
     try {
-      await auth.signInWithEmailAndPassword(email, password);
+      await signInWithEmailAndPassword(firebaseAuth, email, password);
       setSubmitting(false);
       navigate("/shop");
     } catch (error) {

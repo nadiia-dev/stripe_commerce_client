@@ -1,27 +1,33 @@
 import { useEffect, useState } from "react";
-import { auth, createUserProfileDocument } from "../../firebase";
+import { firebaseAuth, createUserProfileDocument } from "../../firebase";
+import { UserContext } from "./UserContext";
+import { onAuthStateChanged } from "firebase/auth";
+import { onSnapshot } from "firebase/firestore";
 
 const UserContextsProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      if (userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
+    const unsubscribeFromAuth = onAuthStateChanged(
+      firebaseAuth,
+      async (userAuth) => {
+        if (userAuth) {
+          const userRef = await createUserProfileDocument(userAuth);
 
-        userRef.onSnapshot((snapShot) => {
-          setUser({
-            id: snapShot.id,
-            ...snapShot.data(),
+          onSnapshot(userRef, (snapShot) => {
+            setUser({
+              id: snapShot.id,
+              ...snapShot.data(),
+            });
+            setLoading(false);
           });
+        } else {
+          setUser(userAuth);
           setLoading(false);
-        });
-      } else {
-        setUser(userAuth);
-        setLoading(false);
+        }
       }
-    });
+    );
 
     return () => unsubscribeFromAuth();
   }, []);

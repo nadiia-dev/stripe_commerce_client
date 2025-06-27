@@ -1,4 +1,4 @@
-import { auth } from "./firebase";
+import { firebaseAuth } from "./firebase";
 
 export const isInCart = (id, cartItems) => {
   return cartItems.find((item) => Number(item.id) === Number(id));
@@ -8,8 +8,9 @@ const API = "http://localhost:8080";
 
 export async function fetchFromAPI(endpoint, opts) {
   const { method, body } = { method: "POST", body: null, ...opts };
-  const user = auth.currentUser;
+  const user = firebaseAuth.currentUser;
   const token = user && (await user.getIdToken());
+  console.log(token);
   const res = await fetch(`${API}/${endpoint}`, {
     method,
     ...(body && { body: JSON.stringify(body) }),
@@ -18,6 +19,7 @@ export async function fetchFromAPI(endpoint, opts) {
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log(res);
 
   if (res.status === 200) {
     return res.json();

@@ -3,7 +3,8 @@ import "./signUp.styles.scss";
 import { useNavigate } from "react-router-dom";
 import Layout from "../shared/Layout";
 import { Formik } from "formik";
-import { auth, createUserProfileDocument } from "../../firebase";
+import { createUserProfileDocument, firebaseAuth } from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const validate = (values) => {
   const errors = {};
@@ -34,7 +35,8 @@ const SignUp = () => {
     const { firstname, email, password } = values;
 
     try {
-      const { user } = await auth.createUserWithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
+        firebaseAuth,
         email,
         password
       );

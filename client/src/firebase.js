@@ -1,4 +1,6 @@
-import firebase from "firebase/app";
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -9,25 +11,25 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const firestore = firebase.firestore();
-const auth = firebase.auth();
+const firebaseFirestore = getFirestore(app);
+const firebaseAuth = getAuth(app);
 
 const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) {
     return;
   }
 
-  const userRef = firestore.doc(`users/${userAuth.uid}`);
-  const snapShot = await userRef.get();
+  const userRef = doc(firebaseFirestore, "users", userAuth.uid);
+  const snapShot = await getDoc(userRef);
 
-  if (!snapShot.exists) {
+  if (!snapShot.exists()) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
 
     try {
-      await userRef.set({
+      await setDoc(userRef, {
         displayName,
         email,
         createdAt,
@@ -41,4 +43,4 @@ const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-export { firestore, auth, createUserProfileDocument };
+export { firebaseFirestore, firebaseAuth, createUserProfileDocument };

@@ -1,6 +1,10 @@
-import firebaseAdmin from "firebase-admin";
+import admin from "firebase-admin";
 
-firebaseAdmin.initializeApp();
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.applicationDefault(),
+  });
+}
 
-export const db = firebaseAdmin.firestore();
-export const auth = firebaseAdmin.auth();
+export const db = admin.firestore();
+export const auth = admin.auth();

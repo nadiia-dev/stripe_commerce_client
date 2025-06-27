@@ -1,4 +1,4 @@
-import { firebase } from "../firebase.js";
+import { auth } from "../firebase.js";
 
 async function decodeJWT(req, res, next) {
   if (
@@ -8,7 +8,7 @@ async function decodeJWT(req, res, next) {
     const idToken = req.headers.authorization.split("Bearer ")[1];
 
     try {
-      const decodedToken = await firebase.auth.verifyIdToken(idToken);
+      const decodedToken = await auth.verifyIdToken(idToken);
       req["currentUser"] = decodedToken;
     } catch (error) {
       console.log(error);
